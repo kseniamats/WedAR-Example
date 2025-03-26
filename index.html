@@ -87,7 +87,7 @@
                 let ambientLight = new THREE.AmbientLight(0xffffff, 0.75);
                 scene.add(ambientLight);
 
-// Додаємо камеру, яка буде пізніше перепризначена на камеру смартфона
+                // Додаємо камеру, яка буде пізніше перепризначена на камеру смартфона
                 camera = new THREE.Camera();
                 scene.add(camera);
                 const listener = new THREE.AudioListener();
@@ -151,7 +151,7 @@
                 // Створюємо головну групу для всіх 3D об'єктів
                 mainContainer = new THREE.Group();
 
-// Масив назв файлів .patt. Масив заповнюється в порядку додавання маркерів
+                // Масив назв файлів .patt. Масив заповнюється в порядку додавання маркерів
                 // якщо замість .patt було додано баркод, на його місце в масив додається порожній рядок
                 const patternNames = ["" ,"" ,""];
                 // Масив баркодів, заповнюється одночасно з масивом патернів
@@ -200,8 +200,9 @@
                         case 'model':
                             function onProgress(xhr) { console.log((xhr.loaded / xhr.total * 100) + '% loaded'); }
                             function onError(xhr) { console.log('An error happened'); }
-contentPromises.push(new Promise((resolve) => {
-                                const test = new THREE.GLTF2Loader().load(${modelFiles[i]}, (response) => {
+
+                            contentPromises.push(new Promise((resolve) => {
+                                const test = new THREE.GLTF2Loader().load(`${modelFiles[i]}`, (response) => {
                                     const scene = response.scene;
                                     const object = scene.children[0];
                                     // Іноді модель не можна побачити з кількох причин, найчастіше варто збільшити чи зменшити у 100 разів.
@@ -216,7 +217,7 @@ contentPromises.push(new Promise((resolve) => {
                                     resolve(modelFiles[i])
                                 }, onProgress, onError)
                             }).then((file) => {
-                                console.log(File ${file} loaded)
+                                console.log(`File ${file} loaded`)
                             }))
                             break;
                         // Якщо контент під маркер це зображення
@@ -225,7 +226,7 @@ contentPromises.push(new Promise((resolve) => {
                                 contentPromises.push(new Promise((resolve) => {
                                     // Завантажуємо зображення
                                     let loader = new THREE.TextureLoader();
-                                    loader.load(${imageFiles[i]}, (texture) => {
+                                    loader.load(`${imageFiles[i]}`, (texture) => {
                                         let geometry1, ratio = texture.image.naturalWidth / texture.image.naturalHeight;
                                         if (texture.image.naturalHeight < texture.image.naturalWidth) {
                                             geometry1 = new THREE.PlaneBufferGeometry(ratio, 1);
@@ -241,7 +242,7 @@ contentPromises.push(new Promise((resolve) => {
                                         resolve(imageFiles[i])
                                     });
                                 }).then(image => {
-                                    console.log(File ${image} loaded)
+                                    console.log(`File ${image} loaded`)
                                 }))
                             }
                             break;
@@ -251,7 +252,7 @@ contentPromises.push(new Promise((resolve) => {
                             let geometry2 = new THREE.PlaneBufferGeometry(1.6 , 0.9);
                             // Оголошуємо та завантажуємо відео
                             let video = document.createElement('video');
-                            video.src = ${videoFiles[i]};
+                            video.src = `${videoFiles[i]}`;
                             video.playsInline = true;
                             // Встановлюємо відео на автоповтор залежно від значення у масиві
                             if (repeatOptions[i]) {
@@ -259,8 +260,7 @@ contentPromises.push(new Promise((resolve) => {
                                     video.play();
                                 })
                             }
-
-// Додаємо відео до масиву аудіо контенту
+                            // Додаємо відео до масиву аудіо контенту
                             if (patternBarcode[i] === -1) {
                                 patternsSound.set(i, video);
                             } else {
@@ -302,10 +302,10 @@ contentPromises.push(new Promise((resolve) => {
                     // Якщо є аудіо файли, налаштовуємо їх і додаємо в масив аудіо контенту.
                     if (audioFiles[i]) {
                         contentPromises.push(new Promise((resolve, reject) => {
-                            audioLoader.load(${audioFiles[i]}, function (buffer) {
+                            audioLoader.load(`${audioFiles[i]}`, function (buffer) {
                                 // Створюємо аудіо джерело
                                 let sound = new THREE.Audio(listener);
-                                sound.name = ${audioFiles[i]};
+                                sound.name = `${audioFiles[i]}`;
                                 sound.setBuffer(buffer);
                                 // Встановлюємо відео на автоповтор залежно від значення у масиві
                                 if (repeatOptions[i]) {
@@ -321,7 +321,7 @@ contentPromises.push(new Promise((resolve) => {
                         }).then((sound) => {
                             sound.play()
                             sound.stop()
-                            console.log(File ${sound.name} loaded)
+                            console.log(`File ${sound.name} loaded`)
                         }))
                     }
                 }
@@ -334,7 +334,7 @@ contentPromises.push(new Promise((resolve) => {
                         loader.style.opacity = '0';
                     });
 
-// Додаємо головний контейнер на сцену
+                // Додаємо головний контейнер на сцену
                 scene.add(mainContainer);
             }
 
@@ -414,7 +414,7 @@ contentPromises.push(new Promise((resolve) => {
                 renderer.render(scene, camera);
             }
 
-// Запускаємо цикл анімації
+            // Запускаємо цикл анімації
             function animate(time) {
                 // Прив'язуємо цикл анімації до рендеру браузера
                 requestAnimationFrame(animate);
